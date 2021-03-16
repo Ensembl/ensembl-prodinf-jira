@@ -12,7 +12,7 @@
 from django.core.management.base import BaseCommand
 import os
 
-from ensembl_intentions.models import RRBug, Intention, KnownBug
+from ensembl.production.jira.models import RRBug, Intention, KnownBug
 from django.template.loader import get_template
 
 

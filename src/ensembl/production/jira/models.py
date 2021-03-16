@@ -12,7 +12,6 @@
    limitations under the License.
 """
 
-
 import re
 
 from django.db import models
@@ -62,11 +61,12 @@ class JiraManager(models.Manager):
 
 
 class JiraFakeModel(models.Model):
-    ''' Readonly fake models to allow easy JIRA ticket listing integration in Django backend. '''
-
+    """ Readonly fake models to allow easy JIRA ticket listing integration in Django backend. """
+    # TODO turn into a proper model storing jira host, jira query to run (allowing updates on query without having to
+    #  deliver app on github.
     class Meta:
         db_table = "jira"
-        app_label = 'ensembl_intentions'
+        app_label = 'ensembl_jira'
 
     export_template_name = "intentions_export.html"
     export_file_name = "export.txt"
@@ -148,4 +148,3 @@ class RRBug(JiraFakeModel):
         'summary',
         'description',
     )
-

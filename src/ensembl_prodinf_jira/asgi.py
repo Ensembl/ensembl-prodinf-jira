@@ -10,13 +10,19 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+"""
+ASGI config for dbcopy project.
 
-from django.conf.urls import url
-from django.contrib import admin
-from django.urls import path
-from django.views.generic import RedirectView
+It exposes the ASGI callable as a module-level variable named ``application``.
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    url('bugs/', RedirectView.as_view(url='/admin/ensembl_jira/knownbug')),
-]
+For more information on this file, see
+https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/
+"""
+
+import os
+
+from django.core.asgi import get_asgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ensembl_prodinf_jira.settings')
+
+application = get_asgi_application()

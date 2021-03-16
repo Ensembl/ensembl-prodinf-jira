@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 'indexes': [],
                 'constraints': [],
             },
-            bases=('ensembl_intentions.jirafakemodel',),
+            bases=('ensembl_jira.jirafakemodel',),
         ),
         migrations.CreateModel(
             name='KnownBug',
@@ -42,6 +42,6 @@ class Migration(migrations.Migration):
                 'indexes': [],
                 'constraints': [],
             },
-            bases=('ensembl_intentions.jirafakemodel',),
+            bases=('ensembl_jira.jirafakemodel',),
         ),
     ]

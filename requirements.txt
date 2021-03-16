@@ -1,6 +1,6 @@
-jira==2.0.0
-django-fernet-fields==0.6
 Django~=3.1.7
+django-fernet-fields==0.6
 djangorestframework~=3.12.2
 django-crispy-forms~=1.11.1
--e git+ssh://git@github.com/Ensembgit branch -u origin/l/ensembl-prodinf-djcore@main#egg=ensmainembl-prodinf-djcore
+jira==2.0.0
+-e git+git://github.com/Ensembl/ensembl-prodinf-djcore.git#egg=ensembl_prodinf_djcore
