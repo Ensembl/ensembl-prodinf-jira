@@ -62,6 +62,7 @@ class JiraManager(models.Manager):
 
 class JiraFakeModel(models.Model):
     """ Readonly fake models to allow easy JIRA ticket listing integration in Django backend. """
+
     # TODO turn into a proper model storing jira host, jira query to run (allowing updates on query without having to
     #  deliver app on github.
     class Meta:

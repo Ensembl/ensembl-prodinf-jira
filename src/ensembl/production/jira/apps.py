@@ -15,5 +15,5 @@ from django.apps import AppConfig
 
 
 class JiraIntentionConfig(AppConfig):
-    name = 'ensembl_jira'
+    name = 'ensembl.production.jira'
     verbose_name = "Ensembl Blog"
