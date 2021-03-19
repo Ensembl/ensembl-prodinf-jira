@@ -98,6 +98,7 @@ class Intention(JiraFakeModel):
 
     class Meta:
         proxy = True
+        app_label = 'ensembl_jira'
         verbose_name = "Release Intention"
 
     def __init__(self, issue, name_map):
@@ -123,6 +124,7 @@ class KnownBug(JiraFakeModel):
 
     class Meta:
         proxy = True
+        app_label = 'ensembl_jira'
         verbose_name = "Known bug"
 
     def __init__(self, issue, name_map):
@@ -136,6 +138,7 @@ class KnownBug(JiraFakeModel):
 class RRBug(JiraFakeModel):
     class Meta:
         proxy = True
+        app_label = 'ensembl_jira'
         verbose_name = "Rapid Release Bug"
 
     export_template_name = "rapid_export.html"
