@@ -79,3 +79,9 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+JIRA_CREDENTIALS = {
+    'user': 'jira_user',
+    # See
+    'password': 'encoded_password'
+}
