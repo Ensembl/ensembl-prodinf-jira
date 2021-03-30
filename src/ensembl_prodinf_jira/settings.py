@@ -66,7 +66,7 @@ WSGI_APPLICATION = 'ensembl_prodinf_jira.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': Path.joinpath(BASE_DIR, 'dbcopy.sqlite3'),
+        'NAME': str(Path.joinpath(BASE_DIR.parent, 'jira.sqlite3')),
     }
 }
 

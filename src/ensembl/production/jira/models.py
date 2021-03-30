@@ -30,6 +30,7 @@ class JiraCredentials(models.Model):
     class Meta:
         verbose_name = 'Jira Credential'
         verbose_name_plural = 'Jira Credentials'
+        app_label = "ensembl_jira"
 
     cred_id = models.AutoField(primary_key=True)
     cred_name = models.CharField("Name", unique=True, max_length=150, editable=False, default='Jira')
