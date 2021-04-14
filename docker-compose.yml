@@ -1,16 +1,16 @@
 version: '3.3'
 services:
-  production_api:
+  ensembl_jira:
     build: .
     command: >
       sh -c "python manage.py flush --no-input &&
              python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py collectstatic --no-input &&
-             gunicorn production_services.wsgi:application --bind 0.0.0.0:8000"
+             gunicorn ensembl_jira.wsgi:application --bind 0.0.0.0:8000"
     volumes:
-      - 'production_services:/usr/src/production_services/'
-      - 'static_volume:/usr/src/production_services/staticfiles'
+      - 'ensembl_jira:/usr/src/ensembl_jira/'
+      - 'static_volume:/usr/src/ensembl_jira/staticfiles'
     expose:
       - 8000
     environment:
@@ -30,11 +30,11 @@ services:
   nginx:
     build: bin/nginx
     volumes:
-      - 'static_volume:/usr/src/production_services/staticfiles'
+      - 'static_volume:/usr/src/ensembl_jira/staticfiles'
     ports:
       - '1337:80'
     depends_on:
-      - production_api
+      - ensembl_jira
     networks:
       - app_network
 volumes:

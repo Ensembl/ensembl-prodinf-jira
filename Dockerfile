@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 ENV PYTHONUNBUFFERED 1
 
-ENV DJANGO_SETTINGS_MODULE=production_services.settings
+ENV DJANGO_SETTINGS_MODULE=ensembl_prodinf_jira.settings
 
 RUN apk update && apk add bash
 
@@ -22,7 +22,7 @@ RUN set -e; \
 WORKDIR /usr/src/app
 
 # Copy the current directory contents into the container
-COPY . /usr/src/app
+COPY ./src /usr/src/app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip
