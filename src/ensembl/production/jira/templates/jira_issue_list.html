@@ -1,34 +1,24 @@
 {% extends "admin/change_list.html" %}
-
-{% block content %}
-    <div class="container col-md-12 col-md-offset-3">
-        <form action="{% url export_view_name %}" method="post">
+{% load static %}
+{% block search %}
+    <div id="toolbar" class="container col-md-12 col-md-offset-3 module">
+        <form id="changelist-search" method="post" action="{% url export_view_name %}">
             <div class="row p-3">
                 {% csrf_token %}
-                <div class="col-md-10">
-                    <input class="form-control" id="intentions_filter" name="intentions_filter" type="text"
-                           placeholder="Filter on Keyword or Ensembl Version..." />
-                </div>
-                <div class="col-md-1 col-md-offset-1">
-                    <button class="btn btn-primary" type="submit">Export</button>
-                </div>
+                <label for="searchbar"><img src="{% static "admin/img/search.svg" %}" alt="Filter"></label>
+                <input type="text" size="50" id="intentions_filter" name="intentions_filter"
+                       value="{{ cl.query }}" id="searchbar" autofocus placeholder="Filter on Keyword or Version...">
+                <input type="submit" value="Export">
             </div>
         </form>
+    </div>
+{% endblock %}
+
+{% block result_list %}
+    <div class="container col-md-12 col-md-offset-3">
         {% block table %}
             {% include 'intentions_table.html' with intentions=intentions jira_link=True %}
         {% endblock table %}
     </div>
 {% endblock %}
 
-{% block extrajs %}
-    <script>
-        $(document).ready(function () {
-            $("#intentions_filter").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#intentions_table > tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        });
-    </script>
-{% endblock %}

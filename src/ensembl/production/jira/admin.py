@@ -14,6 +14,7 @@ from django.contrib import admin
 from django.template.response import TemplateResponse
 from django import forms
 from django.urls import path
+from django.contrib.admin.views.main import ChangeList
 from ensembl.production.djcore.admin import SuperUserAdmin
 from ensembl.production.jira.models import Intention, KnownBug, RRBug, JiraCredentials
 from fernet_fields import EncryptedCharField
@@ -26,11 +27,19 @@ class CredentialsAdmin(admin.ModelAdmin, SuperUserAdmin):
     }
 
 
+class JiraChangeList(ChangeList):
+    title = "Blablabla"
+
+
 class JiraAdmin(admin.ModelAdmin):
+    class Media:
+        js = ('js/ensembl_jira/filter.js',)
+
     readonly_fields = []
     change_list_template = 'jira_issue_list.html'
     export_template_name = "intentions_export.html"
     export_file_name = "export.txt"
+    title = "Jira Export"
 
     def get_urls(self):
         urls = super().get_urls()
@@ -59,8 +68,9 @@ class JiraAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
         extra_context = {
             'intentions': self.model._default_manager.all(),
-            'export_verbose': self.model._meta.verbose_name,
-            'export_view_name': 'admin:' + '_'.join([self.model._meta.app_label, self.model._meta.model_name, 'export'])
+            'export_view_name': 'admin:' + '_'.join(
+                [self.model._meta.app_label, self.model._meta.model_name, 'export']),
+            'title': self.title
         }
         return super().changelist_view(request, extra_context)
 
@@ -75,14 +85,14 @@ class JiraAdmin(admin.ModelAdmin):
 
 @admin.register(Intention)
 class IntentionAdmin(JiraAdmin):
-    pass
+    title = "Ensembl Intentions Export"
 
 
 @admin.register(KnownBug)
 class KnownBugAdmin(JiraAdmin):
-    pass
+    title = "Ensembl Known Bugs Export"
 
 
 @admin.register(RRBug)
 class RRBugAdmin(JiraAdmin):
-    pass
+    title = "Rapid Release Bugs Export"

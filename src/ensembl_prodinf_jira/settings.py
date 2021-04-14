@@ -16,7 +16,7 @@ DEBUG = True
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = '!$hfny5#0soe435!a)fhmv!egr)*8p*lkpv$^&e#=yxt&yd-wc'
+SECRET_KEY = 'l2!hqu2y5o3q7yxfkzfw=ivn(kg_tz!^1l8l%36&$u*eid%4!g'
 
 ALLOWED_HOSTS = []
 
@@ -79,9 +79,3 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-
-JIRA_CREDENTIALS = {
-    'user': 'jira_user',
-    # See
-    'password': 'encoded_password'
-}
