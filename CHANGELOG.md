@@ -7,4 +7,5 @@ v1.0.0
 - Django standard layout / templates integration (enable backend skinning)
 - Changed namespace to `ensembl.production.jira` 
 - Changed app name to `ensembl_jira` 
+- Updated layout to fit expected Portable APP layout (css / files locations / Patterns)
   

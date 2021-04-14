@@ -1,39 +1,31 @@
-Ensembl Django project template
+[![Build Status](https://travis-ci.com/Ensembl/ensembl-prodinf-jira.svg?token=uixv5pZneCqzQNs8zEJr&branch=main)](https://travis-ci.com/Ensembl/ensembl-prodinf-jira)
+
+
+Ensembl Django Jira Export module
 =================================
 
-Ensembl Django project template
+This repository provides features to enable JIRA Internal project web formatted export to display on Ensembl websites
 
 Quick start
 -----------
 
-1. Create a project
+1. clone the repo
 
+   git clone https://github.com/Ensembl/ensembl-prodinf-jira
 
+2. cd ensembl-prodinf-webhelp
 
-2. Create an app within your project
+3. Install dependencies in you favorite virtual env
 
-    2.1 Init your app
-    
-    ```shell script
-    cd your_project_name # if not already in project dir from previous step
-    django-admin startapp --template=https://github.com/ensembl/ensembl-dj-app/archive/main.zip [your_app_name]
-
-    ```
-
-    2.2 Register your new app: Edit  your_project_name/settings/base.py
-     
-    ```python
-    #... 
-    INSTALLED_APPS = [
-        #...
-        [your_app_name]
-        #...
-    ]
-    ```
-
-    2.3 Check: 
-       
-    ```shell script 
-    ./manage.py check 
    ```
- 
+   pip install -r requirements.txt
+   ```
+
+4. Install and run test app
+
+   ```shell
+   ./src/manage.py migrate
+   ./src/manage.py runserver
+   ```
+
+
