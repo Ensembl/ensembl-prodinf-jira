@@ -3,4 +3,4 @@ django-fernet-fields~=0.6
 djangorestframework~=3.12.2
 django-crispy-forms~=1.11.1
 jira~=2.0.0
-ensembl_prodinf_djcore@git+https://github.com/Ensembl/ensembl-prodinf-djcore.git#egg=ensembl_prodinf_djcore
+ensembl-prodinf-djcore@git+https://github.com/Ensembl/ensembl-prodinf-djcore.git#egg=ensembl-prodinf-djcore
