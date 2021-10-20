@@ -1,9 +1,9 @@
 <tr>
     <td>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-active">
             <tr>
-                <td class="col-md-4" colspan="2"><h3>{{ kb.declaration_type }}</h3></td>
-                <td class="col-md-2"><h3>{{ kb.summary }}</h3></td>
+                <td class="col-md-4" colspan="2"><h4>{{ kb.declaration_type }}</h4></td>
+                <td class="col-md-2"><h5>{{ kb.summary }}</h5></td>
             </tr>
             <tr>
                 <td class="col-md-2"><strong>Declaring Team: </strong>{{ kb.declaring_team }}</td>
@@ -15,9 +15,8 @@
             </tr>
             {% if jira_link %}
                 <tr>
-                    <td colspan="3" class="text-right"><a href="{{ kb.permalink }}"
-                                                          target="_blank"><strong>{{ kb.key }}</strong> in
-                        JIRA</a></td>
+                    <td colspan="3" class="text-right">
+                        <a href="{{ kb.permalink }}" target="_blank"><strong>{{ kb.key }}</strong> in JIRA</a></td>
                 </tr>
             {% endif %}
         </table>
