@@ -84,7 +84,7 @@ class JiraFakeModel(models.Model):
 
 
 class Intention(JiraFakeModel):
-    jira_filter = 'project = ENSINT AND issuetype = Epic AND fixVersion in unreleasedVersions() ' \
+    jira_filter = 'project = ENSINT AND issuetype = Story AND fixVersion in unreleasedVersions() ' \
                   'ORDER BY fixVersion DESC, goal ASC, Rank DESC'
     template = 'intention.html'
     filter_on = (
