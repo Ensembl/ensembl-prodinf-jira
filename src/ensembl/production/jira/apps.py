@@ -14,6 +14,7 @@ from django.apps import AppConfig
 
 
 class JiraIntentionConfig(AppConfig):
+    default_auto_field = 'django.db.models.AutoField'
     name = 'ensembl.production.jira'
     label = 'ensembl_jira'
     verbose_name = "Ensembl Blog"

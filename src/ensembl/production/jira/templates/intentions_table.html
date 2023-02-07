@@ -1,7 +1,10 @@
-<table class="table table-bordered">
+<table class="table table-bordered result_list">
   <tbody id="intentions_table">
     {% for kb in intentions %}
+        <tr>
         {% include kb.template with item=kb %}
+        </tr>
+        <tr></tr>
    {% endfor %}
   </tbody>
 </table>
