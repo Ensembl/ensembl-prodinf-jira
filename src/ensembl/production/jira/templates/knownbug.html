@@ -5,14 +5,25 @@
                 <td colspan="2"><h4>{{ kb.summary }}</h4></td>
             </tr>
             <tr>
-                <td class="col-md-2"><strong>Affects: </strong>{{ kb.affected_sites }}</td>
-                <td class="col-md-4"><strong>Expected Versions: </strong>{{ kb.versions_list }}</td>
+                <td class="col-md-2 text-left" align="left" >
+                    <p>
+                    <strong>Affects: </strong>{{ kb.affected_sites }}<br/>
+                    <strong>Declaring Team: </strong>{{ kb.declaring_team }}
+                    </p>
+                </td>
+                <td class="col-md-4 text-left" align="left">
+                    <p>
+                        <strong>Affected Versions: </strong>{{ kb.versions_list }}<br/>
+                        <strong>Fix Version: </strong>{{ kb.fix_version }}
+                    </p>
+                </td>
+
             </tr>
             <tr>
-                <td colspan="2"><strong>Description: </strong>{{ kb.description | safe }}</td>
+                <td colspan="2"><strong>Description: </strong><br/><br/><pre>{{ kb.description | safe }}</pre></td>
             </tr>
             <tr>
-                <td colspan="2"><strong>Workaround: </strong>{{ kb.workaround | safe }}</td>
+                <td colspan="2"><strong>Workaround: </strong><br/><br/>{{ kb.workaround | safe }}</td>
             </tr>
             {% if jira_link %}
                 <tr>

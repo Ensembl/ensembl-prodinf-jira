@@ -48,9 +48,9 @@ class JiraManager(models.Manager):
     def all(self):
         jira_credentials = JiraCredentials.objects.get(cred_name="Jira")
         jira = JIRA(server=jira_credentials.cred_url,
-                    basic_auth=(jira_credentials.user, jira_credentials.credentials))
+                    token_auth=jira_credentials.credentials)
         name_map = {field['name']: field['id'] for field in jira.fields()}
-        jira_issues = jira.search_issues(self.model.jira_filter, expand='renderedFields')
+        jira_issues = jira.search_issues(self.model.jira_filter, expand='renderedFields', maxResults=50)
         return [self.model(issue=jira_issue, name_map=name_map) for jira_issue in jira_issues]
 
     def filter(self, filter_terms):
@@ -72,6 +72,7 @@ class JiraFakeModel(models.Model):
     export_template_name = "intentions_export.html"
     export_file_name = "export.txt"
     objects = JiraManager()
+    fake_id = 1
 
     def __init__(self, issue, name_map):
         # short cut attributes to jira_issues ones
@@ -84,7 +85,7 @@ class JiraFakeModel(models.Model):
 
 
 class Intention(JiraFakeModel):
-    jira_filter = 'project = ENSINT AND issuetype = Story AND fixVersion in unreleasedVersions() ' \
+    jira_filter = 'project="ENSINT" AND issuetype=Story AND fixVersion in unreleasedVersions() ' \
                   'ORDER BY fixVersion DESC, goal ASC, Rank DESC'
     template = 'intention.html'
     filter_on = (
@@ -92,7 +93,7 @@ class Intention(JiraFakeModel):
         'summary',
         'description',
         'target_version',
-        'declaration_type',
+        'affected_teams',
         'declaring_team'
     )
 
@@ -105,20 +106,20 @@ class Intention(JiraFakeModel):
     def __init__(self, issue, name_map):
         super().__init__(issue, name_map)
         self.declaring_team = getattr(issue.fields, name_map['Declaring Team']).value
-        self.declaration_type = getattr(issue.fields, name_map['Goal']).value
+        self.affected_teams = ','.join([team.value for team in getattr(issue.fields, name_map['Affected Team'])])
         self.target_version = issue.fields.fixVersions[0].name if issue.fields.fixVersions else 'N/A'
 
 
 class KnownBug(JiraFakeModel):
-    jira_filter = 'project = ENSINT AND issuetype = Bug AND Website in ' \
-                  '(Archives, Blog, GRCh37, "Live site", Mirrors, Mobile) ' \
-                  ' and status not in (Closed, "Under review") ORDER BY Rank DESC'
+    jira_filter = 'project=ENSINT AND issuetype=Bug ' \
+                  ' and status not in ("Closed", "Under review") ORDER BY Rank DESC'
     template = 'knownbug.html'
     filter_on = (
         'key',
         'summary',
         'description',
         'affected_sites',
+        'declaring_team',
         'versions_list',
         'workaround'
     )
@@ -130,7 +131,9 @@ class KnownBug(JiraFakeModel):
 
     def __init__(self, issue, name_map):
         super().__init__(issue, name_map)
+        self.declaring_team = getattr(issue.fields, name_map['Declaring Team']).value
         self.versions_list = ', '.join(v.name for v in issue.fields.versions)
+        self.fix_version = ', '.join(v.name for v in issue.fields.fixVersions)
         self.workaround = getattr(issue.renderedFields, name_map['Work Around'])
         websites = getattr(issue.fields, name_map['Website']) or []
         self.affected_sites = ', '.join(w.value for w in websites)
@@ -144,7 +147,7 @@ class RRBug(JiraFakeModel):
 
     export_template_name = "rapid_export.html"
     export_file_name = "known_bugs.inc"
-    jira_filter = 'project = "Ensembl Rapid Release" ' \
+    jira_filter = 'project=ENSRR ' \
                   'AND issuetype = Bug AND status not in (Closed, Done, "In Review")' \
                   'AND resolution is EMPTY ORDER BY updatedDate DESC'
     template = 'rapid.html'
