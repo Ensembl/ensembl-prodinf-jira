@@ -1,5 +1,8 @@
 CHANGELOG - Ensembl Prodinf Jira Extract
 ========================================
+v1.1.2
+------
+- Change auth system to use authentication token
 
 v1.1.1
 ------
