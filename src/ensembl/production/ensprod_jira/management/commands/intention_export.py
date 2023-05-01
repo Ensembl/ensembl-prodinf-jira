@@ -14,7 +14,7 @@ import os
 from django.core.management.base import BaseCommand
 from django.template.loader import get_template
 
-from ensembl.production.jira.models import RRBug, Intention, KnownBug
+from ensembl.production.ensprod_jira.models import RRBug, Intention, KnownBug
 
 
 class Command(BaseCommand):

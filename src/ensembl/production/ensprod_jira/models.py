@@ -36,15 +36,13 @@ class JiraCredentials(models.Model):
     cred_name = models.CharField("Name", unique=True, max_length=150, editable=False, default='Jira')
     cred_url = models.CharField("Access Url", max_length=255, default="https://www.ebi.ac.uk/panda/jira/")
     user = models.CharField("User Name", max_length=100)
-    credentials = EncryptedCharField("Token", max_length=255,
+    credentials = EncryptedCharField("Token", max_length=255, db_column='credentials',
                                      help_text="https://www.ebi.ac.uk/panda/jira/secure/ViewProfile.jspa?selectedTab=com.atlassian.pats.pats-plugin:jira-user-personal-access-tokens")
 
     def __str__(self):
         return self.cred_name
 
     def connect(self):
-        token_string = base64.b64encode(f"{self.user}:{self.credentials}".encode('utf-8')).decode('utf-8')
-        print("Login with auth ", self.credentials, token_string)
         jira = JIRA(server=self.cred_url, token_auth=self.credentials)
         return jira
 
@@ -67,7 +65,7 @@ class JiraManager(models.Manager):
     def all(self):
         jira_credentials = JiraCredentials.objects.get(cred_name="Jira")
         jira = jira_credentials.connect()
-        print("jira", jira.current_user())
+        print("ensprod_jira", jira.current_user())
         name_map = {field['name']: field['id'] for field in jira.fields()}
         jira_issues = jira.search_issues(self.model.jira_filter, expand='renderedFields', maxResults=50)
         return [self.model(issue=jira_issue, name_map=name_map) for jira_issue in jira_issues]
@@ -82,10 +80,10 @@ class JiraManager(models.Manager):
 class JiraFakeModel(models.Model):
     """ Readonly fake models to allow easy JIRA ticket listing integration in Django backend. """
 
-    # TODO turn into a proper model storing jira host, jira query to run (allowing updates on query without having to
+    # TODO turn into a proper model storing ensprod_jira host, ensprod_jira query to run (allowing updates on query without having to
     #  deliver app on github.
     class Meta:
-        db_table = "jira"
+        db_table = "ensprod_jira"
         app_label = 'ensembl_jira'
 
     export_template_name = "intentions_export.html"

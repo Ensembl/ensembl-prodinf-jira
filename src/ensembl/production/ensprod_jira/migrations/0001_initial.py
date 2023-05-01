@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
             ],
             options={
-                'db_table': 'jira',
+                'db_table': 'ensprod_jira',
             },
         ),
         migrations.CreateModel(

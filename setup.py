@@ -27,7 +27,7 @@ def import_requirements():
 
 
 setup(
-    name='ensembl-prodinf-jira',
+    name='ensembl-prodinf-ensprod_jira',
     version=os.getenv('CI_COMMIT_TAG', version),
     namespace_packages=['ensembl'],
     packages=find_namespace_packages(where='src', include=['ensembl.production.*']),
@@ -38,7 +38,7 @@ setup(
     author_email='mchakiachvili@ebi.ac.uk',
     maintainer='Ensembl Production Team',
     maintainer_email='ensembl-production@ebi.ac.uk',
-    description='Ensembl Production infrastructure jira package',
+    description='Ensembl Production infrastructure ensprod_jira package',
     python_requires='>=3.7',
     include_package_data=True,
     dependency_links=['https://github.com/Ensembl/ensembl-prodinf-djcore#egg=ensembl_prodinf_djcore'],

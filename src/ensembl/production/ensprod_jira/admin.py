@@ -23,7 +23,7 @@ from django.utils.safestring import mark_safe
 from fernet_fields import EncryptedCharField
 
 from ensembl.production.djcore.admin import SuperUserAdmin
-from ensembl.production.jira.models import Intention, KnownBug, RRBug, JiraCredentials
+from ensembl.production.ensprod_jira.models import Intention, KnownBug, RRBug, JiraCredentials
 
 
 @admin.register(JiraCredentials)
@@ -41,14 +41,16 @@ class CredentialsAdmin(admin.ModelAdmin, SuperUserAdmin):
 
     def get_queryset(self, request):
         if ('add' or 'change') in request.GET:
+            print("I n here")
             return super().get_queryset(request)
         else:
+            print("I nTTT here")
             return super().get_queryset(request).only('cred_name', 'cred_url', 'user')
 
     def changelist_view(self, request, extra_context=None):
         try:
             return super().changelist_view(request, extra_context)
-        except InvalidToken as e:
+        except Exception as e:
             messages.warning(request, f"Invalid Token {e}")
             return redirect(reverse(f'admin:{self.model._meta.app_label}_{self.model._meta.model_name}_add'))
 
