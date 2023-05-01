@@ -28,19 +28,20 @@ def import_requirements():
 
 setup(
     name='ensembl-prodinf-jira',
-    version=os.getenv('CI_COMMIT', version),
+    version=os.getenv('CI_COMMIT_TAG', version),
     namespace_packages=['ensembl'],
     packages=find_namespace_packages(where='src', include=['ensembl.production.*']),
     package_dir={'': 'src'},
     url='https://github.com/Ensembl/ensembl-prodinf-jira',
     license='APACHE 2.0',
-    author='mchakiachvili',
+    author='Marc Chakiachvili',
     author_email='mchakiachvili@ebi.ac.uk',
     maintainer='Ensembl Production Team',
     maintainer_email='ensembl-production@ebi.ac.uk',
-    description='Ensembl Production infrastructure core package',
+    description='Ensembl Production infrastructure jira package',
     python_requires='>=3.7',
     include_package_data=True,
+    dependency_links=['https://github.com/Ensembl/ensembl-prodinf-djcore#egg=ensembl_prodinf_djcore'],
     install_requires=import_requirements(),
     classifiers=[
         'Development Status :: 5 - Production/Stable',

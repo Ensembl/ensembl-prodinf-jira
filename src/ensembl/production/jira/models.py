@@ -16,7 +16,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from fernet_fields import EncryptedCharField
 from jira import JIRA, exceptions as jira_exceptions
-from django.contrib import admin, messages
 
 
 def matches_filter(jira_issue, intentions_filter):

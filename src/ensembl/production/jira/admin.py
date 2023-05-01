@@ -10,19 +10,20 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from django.contrib import admin
-from django.template.response import TemplateResponse
-from django.utils.safestring import mark_safe
 from datetime import datetime
+
+from cryptography.fernet import InvalidToken
 from django import forms
-from django.urls import path, reverse
 from django.contrib import admin, messages
 from django.contrib.admin.views.main import ChangeList
+from django.shortcuts import redirect
+from django.template.response import TemplateResponse
+from django.urls import path, reverse
+from django.utils.safestring import mark_safe
+from fernet_fields import EncryptedCharField
+
 from ensembl.production.djcore.admin import SuperUserAdmin
 from ensembl.production.jira.models import Intention, KnownBug, RRBug, JiraCredentials
-from fernet_fields import EncryptedCharField
-from cryptography.fernet import InvalidToken
-from django.shortcuts import redirect
 
 
 @admin.register(JiraCredentials)

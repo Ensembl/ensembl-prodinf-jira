@@ -9,11 +9,12 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-from django.core.management.base import BaseCommand
 import os
 
-from ensembl.production.jira.models import RRBug, Intention, KnownBug
+from django.core.management.base import BaseCommand
 from django.template.loader import get_template
+
+from ensembl.production.jira.models import RRBug, Intention, KnownBug
 
 
 class Command(BaseCommand):
