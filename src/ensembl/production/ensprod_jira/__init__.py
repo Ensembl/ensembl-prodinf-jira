@@ -1,1 +1,1 @@
-default_app_config = 'ensembl.production.jira.apps.JiraIntentionConfig'
+default_app_config = 'ensembl.production.ensprod_jira.apps.JiraIntentionConfig'
