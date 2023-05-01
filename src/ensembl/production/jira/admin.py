@@ -12,12 +12,17 @@
 
 from django.contrib import admin
 from django.template.response import TemplateResponse
+from django.utils.safestring import mark_safe
+from datetime import datetime
 from django import forms
-from django.urls import path
+from django.urls import path, reverse
+from django.contrib import admin, messages
 from django.contrib.admin.views.main import ChangeList
 from ensembl.production.djcore.admin import SuperUserAdmin
 from ensembl.production.jira.models import Intention, KnownBug, RRBug, JiraCredentials
 from fernet_fields import EncryptedCharField
+from cryptography.fernet import InvalidToken
+from django.shortcuts import redirect
 
 
 @admin.register(JiraCredentials)
@@ -25,6 +30,33 @@ class CredentialsAdmin(admin.ModelAdmin, SuperUserAdmin):
     formfield_overrides = {
         EncryptedCharField: {'widget': forms.widgets.PasswordInput},
     }
+    list_display = ('cred_name', 'cred_url', 'user')
+
+    def save_prev(self, request, object_id):
+        today = datetime.now().strftime("Jira_%Y%m%d_%H%M%S")
+        JiraCredentials.objects.filter(cred_id=object_id).update(cred_name=f"{today}")
+        messages.warning(request,
+                         mark_safe(f"Credentials are invalid, please renew <br/>Previous saved in {today}"))
+
+    def get_queryset(self, request):
+        if ('add' or 'change') in request.GET:
+            return super().get_queryset(request)
+        else:
+            return super().get_queryset(request).only('cred_name', 'cred_url', 'user')
+
+    def changelist_view(self, request, extra_context=None):
+        try:
+            return super().changelist_view(request, extra_context)
+        except InvalidToken as e:
+            messages.warning(request, f"Invalid Token {e}")
+            return redirect(reverse(f'admin:{self.model._meta.app_label}_{self.model._meta.model_name}_add'))
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        try:
+            return super().change_view(request, object_id, form_url, extra_context)
+        except InvalidToken as e:
+            self.save_prev(request, object_id)
+            return redirect(reverse(f'admin:{self.model._meta.app_label}_{self.model._meta.model_name}_add'))
 
 
 class JiraChangeList(ChangeList):
@@ -66,10 +98,17 @@ class JiraAdmin(admin.ModelAdmin):
         return request.user.is_staff
 
     def changelist_view(self, request, extra_context=None):
+        intentions = []
+        try:
+            intentions = self.model._default_manager.all()
+            export_view_name = 'admin:' + '_'.join([self.model._meta.app_label, self.model._meta.model_name, 'export'])
+        except Exception as e:
+            export_view_name = None
+            print("exception ", e)
+            messages.warning(request, f"Something is wrong with JIRA connexion: {e}")
         extra_context = {
-            'intentions': self.model._default_manager.all(),
-            'export_view_name': 'admin:' + '_'.join(
-                [self.model._meta.app_label, self.model._meta.model_name, 'export']),
+            'intentions': intentions,
+            'export_view_name': export_view_name,
             'title': self.title
         }
         return super().changelist_view(request, extra_context)

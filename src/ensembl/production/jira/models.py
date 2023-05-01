@@ -9,13 +9,14 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-
-
+import base64
 import re
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from fernet_fields import EncryptedCharField
-from jira import JIRA
+from jira import JIRA, exceptions as jira_exceptions
+from django.contrib import admin, messages
 
 
 def matches_filter(jira_issue, intentions_filter):
@@ -34,12 +35,31 @@ class JiraCredentials(models.Model):
 
     cred_id = models.AutoField(primary_key=True)
     cred_name = models.CharField("Name", unique=True, max_length=150, editable=False, default='Jira')
-    cred_url = models.CharField("Access Url", max_length=255)
+    cred_url = models.CharField("Access Url", max_length=255, default="https://www.ebi.ac.uk/panda/jira/")
     user = models.CharField("User Name", max_length=100)
-    credentials = EncryptedCharField("Password", max_length=255)
+    credentials = EncryptedCharField("Token", max_length=255,
+                                     help_text="https://www.ebi.ac.uk/panda/jira/secure/ViewProfile.jspa?selectedTab=com.atlassian.pats.pats-plugin:jira-user-personal-access-tokens")
 
     def __str__(self):
         return self.cred_name
+
+    def connect(self):
+        token_string = base64.b64encode(f"{self.user}:{self.credentials}".encode('utf-8')).decode('utf-8')
+        print("Login with auth ", self.credentials, token_string)
+        jira = JIRA(server=self.cred_url, token_auth=self.credentials)
+        return jira
+
+    def clean(self):
+        from datetime import datetime
+        try:
+            jira = self.connect()
+            jira.session()
+            today = datetime.now().strftime("Jira_%Y%m%d_%H%M%S")
+            JiraCredentials.objects.filter(cred_name="Jira").update(cred_name=f"{today}")
+            self.cred_name = "Jira"
+            return super().clean()
+        except jira_exceptions.JIRAError as e:
+            raise ValidationError('Wrong credentials, try again')
 
 
 class JiraManager(models.Manager):
@@ -47,8 +67,8 @@ class JiraManager(models.Manager):
 
     def all(self):
         jira_credentials = JiraCredentials.objects.get(cred_name="Jira")
-        jira = JIRA(server=jira_credentials.cred_url,
-                    token_auth=jira_credentials.credentials)
+        jira = jira_credentials.connect()
+        print("jira", jira.current_user())
         name_map = {field['name']: field['id'] for field in jira.fields()}
         jira_issues = jira.search_issues(self.model.jira_filter, expand='renderedFields', maxResults=50)
         return [self.model(issue=jira_issue, name_map=name_map) for jira_issue in jira_issues]
