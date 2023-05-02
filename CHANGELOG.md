@@ -1,5 +1,10 @@
 CHANGELOG - Ensembl Prodinf Jira Extract
 ========================================
+1.2.0
+-----
+- Added Business Rules to allow only one credentials operating at a time
+- fixes 500 erros when issue with credentials and fernet token
+
 v1.1.2
 ------
 - Change auth system to use authentication token

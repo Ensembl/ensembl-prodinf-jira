@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ensembl.production.jira',
+    'ensembl.production.ensprod_jira',
 ]
 
 MIDDLEWARE = [

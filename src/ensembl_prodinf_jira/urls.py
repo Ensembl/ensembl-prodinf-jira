@@ -17,6 +17,6 @@ from django.urls import path
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
     url('bugs/', RedirectView.as_view(url='/admin/ensembl_jira/knownbug')),
 ]

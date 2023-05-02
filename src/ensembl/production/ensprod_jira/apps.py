@@ -10,5 +10,11 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from django.apps import AppConfig
 
-default_app_config = 'ensembl.production.jira.apps.JiraIntentionConfig'
+
+class JiraIntentionConfig(AppConfig):
+    default_auto_field = 'django.db.models.AutoField'
+    name = 'ensembl.production.ensprod_jira'
+    label = 'ensembl_jira'
+    verbose_name = "Ensembl Jira"

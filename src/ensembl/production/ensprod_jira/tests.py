@@ -10,18 +10,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-import json
-
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.urls import reverse
-from rest_framework import status
+from django.test import TestCase
 from rest_framework.test import APITestCase
 
 User = get_user_model()
 
 
-class JiraExportTestCase(APITestCase):
+class JiraExportTest(APITestCase):
 
     def testAlive(self):
+        self.assertTrue(True)
+
+class TestUpdateMail(TestCase):
+    def testFake(self):
         self.assertTrue(True)
