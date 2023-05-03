@@ -86,7 +86,7 @@ class JiraFakeModel(models.Model):
         db_table = "ensprod_jira"
         app_label = 'ensembl_jira'
 
-    export_template_name = "intentions_export.html"
+    export_template_name = "admin/ensprod_jira/intentions_export.html"
     export_file_name = "export.txt"
     objects = JiraManager()
     fake_id = 1
@@ -104,7 +104,7 @@ class JiraFakeModel(models.Model):
 class Intention(JiraFakeModel):
     jira_filter = 'project="ENSINT" AND issuetype=Story AND fixVersion in unreleasedVersions() ' \
                   'ORDER BY fixVersion DESC, goal ASC, Rank DESC'
-    template = 'intention.html'
+    template = 'admin/ensprod_jira/intention.html'
     filter_on = (
         'key',
         'summary',
@@ -130,7 +130,7 @@ class Intention(JiraFakeModel):
 class KnownBug(JiraFakeModel):
     jira_filter = 'project=ENSINT AND issuetype=Bug ' \
                   ' and status not in ("Closed", "Under review") ORDER BY Rank DESC'
-    template = 'knownbug.html'
+    template = 'admin/ensprod_jira/knownbug.html'
     filter_on = (
         'key',
         'summary',
@@ -162,12 +162,12 @@ class RRBug(JiraFakeModel):
         app_label = 'ensembl_jira'
         verbose_name = "Rapid Release Bug"
 
-    export_template_name = "rapid_export.html"
+    template = 'admin/ensprod_jira/rapid.html'
+    export_template_name = "admin/ensprod_jira/rapid_export.html"
     export_file_name = "known_bugs.inc"
     jira_filter = 'project=ENSRR ' \
                   'AND issuetype = Bug AND status not in (Closed, Done, "In Review")' \
                   'AND resolution is EMPTY ORDER BY updatedDate DESC'
-    template = 'rapid.html'
     filter_on = (
         'key',
         'summary',

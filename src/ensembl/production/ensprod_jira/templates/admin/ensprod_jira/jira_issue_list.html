@@ -20,7 +20,7 @@
     <div class="results">
         <table id="result_list">
         {% block table %}
-            {% include 'intentions_table.html' with intentions=intentions jira_link=True %}
+            {% include 'admin/ensprod_jira/intentions_table.html' with intentions=intentions jira_link=True %}
         {% endblock table %}
         </table>
     </div>

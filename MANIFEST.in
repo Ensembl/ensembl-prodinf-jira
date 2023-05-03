@@ -3,5 +3,5 @@ include VERSION
 include NOTICE
 include requirements.txt
 include requirements-prod.txt
-recursive-include src/ensembl/production/jira/static *
-recursive-include src/ensembl/production/jira/templates *
+recursive-include src/ensembl/production/ensprod_jira/static *
+recursive-include src/ensembl/production/ensprod_jira/templates *

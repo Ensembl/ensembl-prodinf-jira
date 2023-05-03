@@ -68,11 +68,11 @@ class JiraChangeList(ChangeList):
 
 class JiraAdmin(admin.ModelAdmin):
     class Media:
-        js = ('js/ensembl_jira/filter.js',)
+        js = ('ensembl_jira/js/filter.js',)
 
     readonly_fields = []
-    change_list_template = 'jira_issue_list.html'
-    export_template_name = "intentions_export.html"
+    change_list_template = 'admin/ensprod_jira/jira_issue_list.html'
+    export_template_name = "admin/ensprod_jira/intentions_export.html"
     export_file_name = "export.txt"
     title = "Jira Export"
 
