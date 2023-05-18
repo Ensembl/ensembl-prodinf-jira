@@ -13,15 +13,34 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from rest_framework.test import APITestCase
-
+from ensembl.production.ensprod_jira.models import KnownBug, RRBug
+from collections import namedtuple
 User = get_user_model()
 
 
 class JiraExportTest(APITestCase):
 
     def testAlive(self):
-        self.assertTrue(True)
+        filter_on = [
+            'key',
+            'summary',
+            'description',
+            'affected_sites',
+            'declaring_team',
+            'versions_list',
+            'workaround'
+        ]
+        filter_on.sort()
+        expect = list(KnownBug.filter_on)
+        expect.sort()
+        self.assertListEqual(filter_on, expect)
+        filter_on = [
+            'key',
+            'summary',
+            'description',
+        ]
+        filter_on.sort()
+        expect = list(RRBug.filter_on)
+        expect.sort()
+        self.assertListEqual(filter_on, expect)
 
-class TestUpdateMail(TestCase):
-    def testFake(self):
-        self.assertTrue(True)

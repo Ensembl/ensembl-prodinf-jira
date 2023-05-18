@@ -92,8 +92,9 @@ class JiraFakeModel(models.Model):
     fake_id = 1
 
     def __init__(self, issue, name_map):
-        # short cut attributes to jira_issues ones
+        # shortcut attributes to jira_issues ones
         super().__init__()
+        self.name_map = name_map
         self.permalink = issue.permalink
         self.key = issue.key
         self.summary = issue.fields.summary
