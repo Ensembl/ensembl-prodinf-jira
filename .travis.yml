@@ -11,4 +11,4 @@ env:
 install:
   - pip install -r requirements-dev.txt
 script:
-  - coverage run --source='.' ./src/manage.py test ensembl/production
+  - coverage run --source='.' ./src/manage.py test ./src/ensembl/production
