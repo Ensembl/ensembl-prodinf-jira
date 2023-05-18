@@ -3,4 +3,4 @@ django-fernet-fields~=0.6
 djangorestframework~=3.12.4
 jira==3.4.1
 ensembl-prodinf-djcore@git+https://github.com/Ensembl/ensembl-prodinf-djcore.git@1.1#egg=ensembl-prodinf-djcore
-urllib3==1.26.15
+urllib3>=1.26.15
