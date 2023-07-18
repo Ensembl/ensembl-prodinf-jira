@@ -27,7 +27,7 @@ def import_requirements():
 
 
 setup(
-    name='ensembl-prodinf-ensprod_jira',
+    name='ensembl-prodinf-jira',
     version=os.getenv('CI_COMMIT_TAG', version),
     namespace_packages=['ensembl'],
     packages=find_namespace_packages(where='src', include=['ensembl.production.*']),
