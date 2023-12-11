@@ -1,7 +1,7 @@
 CHANGELOG - Ensembl Prodinf Jira Extract
 ========================================
 
-2.0.1
+2.0.4
 -----
 - Update ensembl-djcore dependency to range from pypi
 2.0.0
