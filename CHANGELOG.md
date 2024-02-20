@@ -1,6 +1,8 @@
 CHANGELOG - Ensembl Prodinf Jira Extract
 ========================================
-
+2.0.5
+-----
+- Extends JIRA query limit to 1000 items
 2.0.4
 -----
 - Update ensembl-djcore dependency to range from pypi
