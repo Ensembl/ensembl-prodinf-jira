@@ -67,7 +67,7 @@ class JiraManager(models.Manager):
         jira = jira_credentials.connect()
         print("ensprod_jira", jira.current_user())
         name_map = {field['name']: field['id'] for field in jira.fields()}
-        jira_issues = jira.search_issues(self.model.jira_filter, expand='renderedFields', maxResults=50)
+        jira_issues = jira.search_issues(self.model.jira_filter, expand='renderedFields', maxResults=300)
         return [self.model(issue=jira_issue, name_map=name_map) for jira_issue in jira_issues]
 
     def filter(self, filter_terms):
@@ -130,7 +130,7 @@ class Intention(JiraFakeModel):
 
 class KnownBug(JiraFakeModel):
     jira_filter = 'project=ENSINT AND issuetype=Bug ' \
-                  ' and status not in ("Closed", "Under review") ORDER BY Rank DESC'
+                  ' and status not in ("Closed", "Under review") ORDER BY  affectedVersion DESC, fixVersion DESC'
     template = 'admin/ensprod_jira/knownbug.html'
     filter_on = (
         'key',
