@@ -22,13 +22,7 @@ class JiraExportTest(APITestCase):
 
     def testAlive(self):
         filter_on = [
-            'key',
-            'summary',
-            'description',
-            'affected_sites',
-            'declaring_team',
             'versions_list',
-            'workaround'
         ]
         filter_on.sort()
         expect = list(KnownBug.filter_on)
