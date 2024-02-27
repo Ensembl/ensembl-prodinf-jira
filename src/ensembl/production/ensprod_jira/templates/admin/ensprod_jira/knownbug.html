@@ -1,37 +1,52 @@
-<tr>
-    <td>
-        <table class="table table-bordered table-active">
-            <tr>
-                <td colspan="2"><h4>{{ kb.summary }}</h4></td>
-            </tr>
-            <tr>
-                <td class="col-md-2 text-left" align="left" >
-                    <p>
-                    <strong>Affects: </strong>{{ kb.affected_sites }}<br/>
-                    <strong>Declaring Team: </strong>{{ kb.declaring_team }}
-                    </p>
-                </td>
-                <td class="col-md-4 text-left" align="left">
-                    <p>
-                        <strong>Affected Versions: </strong>{{ kb.versions_list }}<br/>
-                        <strong>Fix Version: </strong>{{ kb.fix_version }}
-                    </p>
-                </td>
-
-            </tr>
-            <tr>
-                <td colspan="2"><strong>Description: </strong><br/><br/><pre>{{ kb.description | safe }}</pre></td>
-            </tr>
-            <tr>
-                <td colspan="2"><strong>Workaround: </strong><br/><br/>{{ kb.workaround | safe }}</td>
-            </tr>
+<div class="jira-item">
+    <section>
+        <h4><strong>{{ kb.summary }}</strong></h4>
+    </section>
+    <section>
+        <div class="inline-group">
+            <span class="label">Declaring team:</span>
+            <span>{{ kb.declaring_team }}</span>
             {% if jira_link %}
-                <tr>
-                    <td colspan="2" class="text-right"><a href="{{ kb.permalink }}"
-                                                          target="_blank"><strong>{{ kb.key }}</strong> in
-                        JIRA</a></td>
-                </tr>
+                <span class="text-right">
+                    <a href="{{ kb.permalink }}"
+                       target="_blank"><strong>-- {{ kb.key }}</strong></a>
+                </span>
             {% endif %}
-        </table>
-    </td>
-</tr>
+        </div>
+        {% if kb.affected_sites %}
+            <div>
+                <span class="label">Affects:</span>
+                <span>{{ kb.affected_sites }}</span>
+            </div>
+        {% endif %}
+
+    </section>
+    <section>
+        <div>
+            <span class="label">Affected Versions:</span>
+            <span>{{ kb.versions_list }}</span>
+        </div>
+        <div>
+            <span class="label">Fix Version:</span>
+            <span>{{ kb.fix_version }}</span>
+        </div>
+    </section>
+    <section>
+        <p class="label">
+            Description:
+        </p>
+        <pre class="jira-message">{{ kb.description | safe }}</pre>
+    </section>
+    {% if kb.workaround %}
+        <section>
+            <p class="label">
+                Workaround:
+            </p>
+
+            <pre class="text">
+          {{ kb.workaround | safe }}
+        </pre>
+        </section>
+    {% endif %}
+
+</div>
