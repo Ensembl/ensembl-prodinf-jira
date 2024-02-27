@@ -1,44 +1,45 @@
 <div class="jira-item">
-    <section>
-        <h4><strong>{{ kb.summary }}</strong></h4>
-    </section>
-    <section>
-        <div class="inline-group">
+    <div class="filter_versions">
+        <section>
+            <h4><strong>{{ kb.summary }}</strong></h4>
+        </section>
+        <section>
+            <div class="inline-group">
 
                 <span class="text-right">
                     <a href="{{ kb.permalink }}"
                        target="_blank"><strong>{{ kb.key }}</strong></a>
                 </span>
-        </div>
-    </section>
-    {% if kb.affected_sites or kb.versions_list %}
-        <section>
-            {% if kb.versions_list %}
-                <div>
-                    <span class="label">Affected Versions:</span>
-                    <span>{{ kb.versions_list }}</span>
-                </div>
-            {% endif %}
-            {% if kb.fix_version %}
-                <div>
-                    <span class="label">Fix Version:</span>
-                    <span>{{ kb.versions_list }}</span>
-                </div>
-            {% endif %}
+            </div>
         </section>
-    {% endif %}
-    <section>
-        <div>
-            <span class="label">Reporter:</span>
-            <span><a href="mailto:{{ kb.contact }}">{{ kb.contact }}</a></span>
-        </div>
-    </section>
-    <section>
-        <p class="label">
-            Description:
-        </p>
-        <pre class="jira-message">{{ kb.description | safe }}</pre>
-    </section>
+        {% if kb.affected_sites or kb.versions_list %}
+            <section>
+                {% if kb.versions_list %}
+                    <div>
+                        <span class="label">Affected Versions:</span>
+                        <span>{{ kb.versions_list }}</span>
+                    </div>
+                {% endif %}
+                {% if kb.fix_version %}
+                    <div>
+                        <span class="label">Fix Version:</span>
+                        <span>{{ kb.versions_list }}</span>
+                    </div>
+                {% endif %}
+            </section>
+        {% endif %}
+        <section>
+            <div>
+                <span class="label">Reporter:</span>
+                <span><a href="mailto:{{ kb.contact }}">{{ kb.contact }}</a></span>
+            </div>
+        </section>
+        <section>
+            <p class="label">
+                Description:
+            </p>
+            <pre class="jira-message">{{ kb.description | safe }}</pre>
+        </section>
+    </div>
 </div>
-
 

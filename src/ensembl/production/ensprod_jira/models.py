@@ -133,13 +133,7 @@ class KnownBug(JiraFakeModel):
                   ' ORDER BY affectedVersion DESC, fixVersion DESC'
     template = 'admin/ensprod_jira/knownbug.html'
     filter_on = (
-        'key',
-        'summary',
-        'description',
-        'affected_sites',
-        'declaring_team',
         'versions_list',
-        'workaround'
     )
 
     class Meta:

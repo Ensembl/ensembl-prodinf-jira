@@ -1,27 +1,25 @@
 {% load linebreakspar %}
 
 {% for kb in intentions %}
-    <tr>
-        <td colspan="2">
-            <h3>{{ kb.summary }}</h3>
-        </td>
-    </tr>
-    {% if kb.affected_sites or kb.versions_list %}
-    <tr>
-        <td class="col-md-2">{% if kb.affected_sites  %}<strong>Affects: </strong>{{ kb.affected_sites }}{% endif %}</td>
-        <td class="col-md-4">{% if kb.versions_list  %}<strong>Versions: </strong>{{ kb.versions_list }}{% endif %}</td>
-    </tr>
-    {% endif %}
-    <tr>
-        <td colspan="2"><strong>Description: </strong>
-            {{ kb.description | linebreakspar }}
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"><strong>Workaround: </strong>{% if kb.workaround %}{{ kb.workaround | safe }}{% else %}No work
-            around. Except using most up to date datasets{% endif %}</td>
-    </tr>
-    <tr>
-        <td><hr/></td>
-    </tr>
+    <table class="table table-bordered">
+        <tbody id="known_bugs_table">
+        <tr>
+            <td colspan="2">
+                <h3>{{ kb.summary }}</h3>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2"><strong>Affects: </strong>{{ kb.affected_sites|default:'Live Site' }}</td>
+            <td class="col-md-4"><strong>Versions: </strong>{{ kb.versions_list }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Description: </strong>{{ kb.description | linebreakspar }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <strong>Workaround: </strong>{{ kb.workaround | safe | default:'No work around. Except using most up to date datasets' }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
 {% endfor %}
