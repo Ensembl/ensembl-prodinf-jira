@@ -66,7 +66,7 @@ class JiraManager(models.Manager):
         jira_credentials = JiraCredentials.objects.get(cred_name="Jira")
         jira = jira_credentials.connect()
         name_map = {field['name']: field['id'] for field in jira.fields()}
-        jira_issues = jira.search_issues(self.model.jira_filter, expand='renderedFields', maxResults=100)
+        jira_issues = jira.search_issues(self.model.jira_filter, expand='renderedFields', maxResults=300)
         return [self.model(issue=jira_issue, name_map=name_map) for jira_issue in jira_issues]
 
     def filter(self, filter_terms):
