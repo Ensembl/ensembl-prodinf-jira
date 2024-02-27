@@ -5,8 +5,8 @@
     $(document).ready(function () {
         $("#intentions_filter").on("keyup", function () {
             let value = $(this).val().toLowerCase();
-            $("#intentions_table > tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            $("div.intentions_table > div.jira-item").filter(function () {
+                $(this).toggle($(this).find('.filter_versions').text().toLowerCase().indexOf(value) > -1)
             });
         });
     });

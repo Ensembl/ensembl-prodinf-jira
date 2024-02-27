@@ -65,7 +65,6 @@ class JiraManager(models.Manager):
     def all(self):
         jira_credentials = JiraCredentials.objects.get(cred_name="Jira")
         jira = jira_credentials.connect()
-        print("ensprod_jira", jira.current_user())
         name_map = {field['name']: field['id'] for field in jira.fields()}
         jira_issues = jira.search_issues(self.model.jira_filter, expand='renderedFields', maxResults=300)
         return [self.model(issue=jira_issue, name_map=name_map) for jira_issue in jira_issues]
@@ -86,7 +85,7 @@ class JiraFakeModel(models.Model):
         db_table = "ensprod_jira"
         app_label = 'ensembl_jira'
 
-    export_template_name = "admin/ensprod_jira/intentions_export.html"
+    export_template_name = "admin/ensprod_jira/jira_export.html"
     export_file_name = "export.txt"
     objects = JiraManager()
     fake_id = 1
@@ -104,7 +103,7 @@ class JiraFakeModel(models.Model):
 
 class Intention(JiraFakeModel):
     jira_filter = 'project="ENSINT" AND issuetype=Story AND fixVersion in unreleasedVersions() ' \
-                  'ORDER BY fixVersion DESC, goal ASC, Rank DESC'
+                  'ORDER BY fixVersion DESC, affectedVersion DESC, Rank DESC'
     template = 'admin/ensprod_jira/intention.html'
     filter_on = (
         'key',
@@ -124,22 +123,17 @@ class Intention(JiraFakeModel):
     def __init__(self, issue, name_map):
         super().__init__(issue, name_map)
         self.declaring_team = getattr(issue.fields, name_map['Declaring Team']).value
-        self.affected_teams = ','.join([team.value for team in getattr(issue.fields, name_map['Affected Team'])])
+        self.affected_teams = ', '.join([team.value for team in getattr(issue.fields, name_map['Affected Team'])])
         self.target_version = issue.fields.fixVersions[0].name if issue.fields.fixVersions else 'N/A'
 
 
 class KnownBug(JiraFakeModel):
     jira_filter = 'project=ENSINT AND issuetype=Bug ' \
-                  ' and status not in ("Closed", "Under review") ORDER BY  affectedVersion DESC, fixVersion DESC'
+                  ' and status not in ("Resolved", "Closed", "Under review")' \
+                  ' ORDER BY affectedVersion DESC, fixVersion DESC'
     template = 'admin/ensprod_jira/knownbug.html'
     filter_on = (
-        'key',
-        'summary',
-        'description',
-        'affected_sites',
-        'declaring_team',
         'versions_list',
-        'workaround'
     )
 
     class Meta:
@@ -164,7 +158,6 @@ class RRBug(JiraFakeModel):
         verbose_name = "Rapid Release Bug"
 
     template = 'admin/ensprod_jira/rapid.html'
-    export_template_name = "admin/ensprod_jira/rapid_export.html"
     export_file_name = "known_bugs.inc"
     jira_filter = 'project=ENSRR ' \
                   'AND issuetype = Bug AND status not in (Closed, Done, "In Review")' \
@@ -174,3 +167,10 @@ class RRBug(JiraFakeModel):
         'summary',
         'description',
     )
+
+    def __init__(self, issue, name_map):
+        super().__init__(issue, name_map)
+        self.fix_version = ', '.join(v.name for v in issue.fields.fixVersions)
+        self.versions_list = ', '.join(v.name for v in issue.fields.versions)
+
+

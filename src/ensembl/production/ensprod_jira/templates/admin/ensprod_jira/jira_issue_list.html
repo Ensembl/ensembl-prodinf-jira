@@ -2,27 +2,42 @@
 {% load static %}
 {% block search %}
     {% if export_view_name %}
-    <div id="toolbar" class="container col-md-12 col-md-offset-3 module">
-        <form id="changelist-search" method="post" action="{% url export_view_name %}">
-            <div class="row p-3">
-                {% csrf_token %}
-                <label for="searchbar"><img src="{% static "admin/img/search.svg" %}" alt="Filter"></label>
-                <input type="text" size="50" id="intentions_filter" name="intentions_filter"
-                       value="{{ cl.query }}" id="searchbar" autofocus placeholder="Filter on Keyword or Version...">
-                <input type="submit" class="btn btn-info" value="Export">
-            </div>
-        </form>
-    </div>
+        <div class="col-12 pb-4" id="change-list-filters">
+            <form id="changelist-search" class="form-inline" method="post" action="{% url export_view_name %}">
+                <div class="form-group">
+                    {% csrf_token %}
+                    <input class="form-control" type="text" name="intentions_filter" value=""
+                           id="intentions_filter" size="50"
+                           autofocus placeholder="Filter on Version..."/>
+                </div>
+                <div class="form-group" id="search_group">
+                    <button type="submit" class="btn btn-primary">Export</button>
+                    <input type="hidden" name="user" value="mchakiachvili">
+                </div>
+            </form>
+        </div>
+
     {% endif %}
 {% endblock %}
 
 {% block result_list %}
-    <div class="results">
-        <table id="result_list">
-        {% block table %}
-            {% include 'admin/ensprod_jira/intentions_table.html' with intentions=intentions jira_link=True %}
-        {% endblock table %}
-        </table>
+    <div class="results intentions_table">
+        {% for kb in intentions %}
+            {% include kb.template with item=kb jira_link=True %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block pagination %}
+    <div class="col-12 jira-pagination">
+        <div class="dataTables_info" role="status" aria-live="polite">
+            {{ intentions | length }}
+            {% if cl.result_count == 1 %}
+                {{ cl.opts.verbose_name }}
+            {% else %}
+                {{ cl.opts.verbose_name_plural }}
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
 

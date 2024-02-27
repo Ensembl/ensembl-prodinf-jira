@@ -1,27 +1,44 @@
-<td>
-    <table class="table table-striped">
-        <tr>
-            <td class="col-md-4 text-left" colspan="3" align="left"><h3>{{ kb.summary }}</h3></td>
-        </tr>
-        <tr>
-            <td class="col-md-2">
-                <p>
-                    <strong>Declaring Team: </strong>{{ kb.declaring_team }}<br/>
-                    <strong>Affected Team: </strong>{{ kb.affected_teams }}
-                </p>
-            </td>
-            <td class="col-md-2"><strong>Reporter: </strong><a href="mailto:{{ kb.reporter.emailAddress }}">Contact
-                Reporter</a></td>
-            <td class="col-md-4"><strong>Target Versions: </strong>{{ kb.target_version }}</td>
-        </tr>
-        <tr>
-            <td colspan="3"><strong>Description: </strong><br/><br/><pre>{{ kb.description | safe }}</pre></td>
-        </tr>
-        {% if jira_link %}
-            <tr>
-                <td colspan="3" class="text-right" align="right">
-                    <a href="{{ kb.permalink }}" target="_blank"><strong>{{ kb.key }}</strong> in JIRA</a></td>
-            </tr>
-        {% endif %}
-    </table>
-</td>
+<div class="jira-item">
+    <section>
+        <h4><strong>{{ kb.summary }}</strong></h4>
+    </section>
+    <section>
+        <div class="inline-group">
+            <span class="label">Declaring team:</span>
+            <span>{{ kb.declaring_team }}</span>
+            {% if jira_link %}
+                <span class="text-right">
+                    <a href="{{ kb.permalink }}"
+                       target="_blank"><strong>-- {{ kb.key }}</strong></a>
+                </span>
+            {% endif %}
+        </div>
+        <div class="inline-group">
+            <span class="label">Affected Team: </span>
+            <span>{{ kb.affected_teams }}</span>
+
+        </div>
+    </section>
+    <section>
+        <div>
+            <span class="label">Reporter:</span>
+            <span><a href="mailto:{{ kb.contact }}">{{ kb.contact }}</a></span>
+        </div>
+    </section>
+    <section>
+        <div>
+            <span class="label">Target Versions:</span>
+            <span class="filter_versions">{{ kb.target_version }}</span>
+        </div>
+        <div>
+            <span class="label">Fix Version:</span>
+            <span class="filter_versions">{{ kb.fix_version }}</span>
+        </div>
+    </section>
+    <section>
+        <p class="label">
+            Description:
+        </p>
+        <pre class="jira-message">{{ kb.description | safe }}</pre>
+    </section>
+</div>

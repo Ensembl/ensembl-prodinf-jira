@@ -41,10 +41,8 @@ class CredentialsAdmin(admin.ModelAdmin, SuperUserAdmin):
 
     def get_queryset(self, request):
         if ('add' or 'change') in request.GET:
-            print("I n here")
             return super().get_queryset(request)
         else:
-            print("I nTTT here")
             return super().get_queryset(request).only('cred_name', 'cred_url', 'user')
 
     def changelist_view(self, request, extra_context=None):
@@ -63,16 +61,17 @@ class CredentialsAdmin(admin.ModelAdmin, SuperUserAdmin):
 
 
 class JiraChangeList(ChangeList):
-    title = "Blablabla"
+    title = "Changelist"
 
 
 class JiraAdmin(admin.ModelAdmin):
     class Media:
         js = ('ensembl_jira/js/filter.js',)
+        css = {'all': ('ensembl_jira/css/jira.css',)}
 
     readonly_fields = []
     change_list_template = 'admin/ensprod_jira/jira_issue_list.html'
-    export_template_name = "admin/ensprod_jira/intentions_export.html"
+    export_template_name = "admin/ensprod_jira/jira_export.html"
     export_file_name = "export.txt"
     title = "Jira Export"
 
@@ -107,7 +106,6 @@ class JiraAdmin(admin.ModelAdmin):
             export_view_name = 'admin:' + '_'.join([self.model._meta.app_label, self.model._meta.model_name, 'export'])
         except Exception as e:
             export_view_name = None
-            print("exception ", e)
             messages.warning(request, f"Something is wrong with JIRA connexion: {e}")
         extra_context = {
             'intentions': intentions,
