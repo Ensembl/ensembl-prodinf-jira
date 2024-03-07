@@ -129,7 +129,7 @@ class Intention(JiraFakeModel):
 
 class KnownBug(JiraFakeModel):
     jira_filter = 'project=ENSINT AND issuetype=Bug ' \
-                  ' and status not in ("Resolved", "Closed", "Under review")' \
+                  ' and status not in ("Closed", "Under review")' \
                   ' ORDER BY affectedVersion DESC, fixVersion DESC'
     template = 'admin/ensprod_jira/knownbug.html'
     filter_on = (
