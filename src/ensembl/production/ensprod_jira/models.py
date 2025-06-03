@@ -34,16 +34,21 @@ class JiraCredentials(models.Model):
 
     cred_id = models.AutoField(primary_key=True)
     cred_name = models.CharField("Name", unique=True, max_length=150, editable=False, default='Jira')
-    cred_url = models.CharField("Access Url", max_length=255, default="https://www.ebi.ac.uk/panda/jira/")
+    cred_url = models.CharField("Access Url", max_length=255, default="https://embl.atlassian.net")
     user = models.CharField("User Name", max_length=100)
     credentials = EncryptedCharField("Token", max_length=255, db_column='credentials',
-                                     help_text="https://www.ebi.ac.uk/panda/jira/secure/ViewProfile.jspa?selectedTab=com.atlassian.pats.pats-plugin:jira-user-personal-access-tokens")
+                                     help_text="https://embl.atlassian.net/jira/secure/ViewProfile.jspa?selectedTab=com.atlassian.pats.pats-plugin:jira-user-personal-access-tokens")
 
     def __str__(self):
         return self.cred_name
 
     def connect(self):
-        jira = JIRA(server=self.cred_url, token_auth=self.credentials)
+        #jira = JIRA(server=self.cred_url, token_auth=self.credentials)
+        options = {"server": self.cred_url}
+        jira = JIRA(
+            options=options,
+            basic_auth=(self.user, self.credentials)
+        )
         return jira
 
     def clean(self):
@@ -98,7 +103,7 @@ class JiraFakeModel(models.Model):
         self.key = issue.key
         self.summary = issue.fields.summary
         self.description = issue.fields.description
-        self.contact = issue.fields.reporter.emailAddress
+        self.contact = issue.fields.reporter.emailAddress if hasattr(issue.fields.reporter, 'emailAddress') else "ensprod@ebi.ac.uk"
 
 
 class Intention(JiraFakeModel):
