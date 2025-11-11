@@ -1,5 +1,5 @@
 Django~=3.2.2
 django-fernet-fields~=0.6
 djangorestframework~=3.12.4
-jira==3.4.1
+jira==3.10.5
 ensembl-prodinf-djcore>=1.2.0.dev1,<2.0.0
